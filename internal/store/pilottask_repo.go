@@ -105,7 +105,7 @@ func (s *SQLiteStore) UpdatePilotTaskClaim(ctx context.Context, id, claimedBy, l
 	ex := s.executor(ctx)
 	res, err := ex.Exec(`UPDATE pilot_tug_tasks SET claimed_by = ?, lease_id = ?, claim_expires_at = ?,
 		status = 'claimed', version = version + 1, updated_at = ? WHERE id = ? AND version = ?`,
-		"", leaseID, expires, nowStamp(), id, version)
+		claimedBy, leaseID, expires, nowStamp(), id, version)
 	if err != nil {
 		return 0, fmt.Errorf("update pilot task claim: %w", err)
 	}

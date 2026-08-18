@@ -184,12 +184,10 @@ func (s *Service) Claim(ctx context.Context, req ClaimRequest) (*ClaimResult, er
 		After:      map[string]string{"executor": req.ExecutorID, "lease": leaseID},
 		RequestID:  req.RequestID,
 	})
-	claimedTask, readErr := s.tasks.GetPilotTask(ctx, req.TaskID)
-	if readErr != nil {
-		return nil, apperr.Wrap(apperr.CodeInternal, "read claimed task failed", readErr)
-	}
 	return &ClaimResult{
-		TaskID: claimedTask.ID, LeaseID: leaseID, ExpiresAt: expiresAt,
+		TaskID:    req.TaskID,
+		LeaseID:   leaseID,
+		ExpiresAt: expiresAt,
 	}, nil
 }
 
